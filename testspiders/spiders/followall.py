@@ -1,3 +1,4 @@
+from twisted.internet import reactor
 from urlparse import urlparse
 from scrapy.http import Request, HtmlResponse
 from scrapy.spider import BaseSpider
@@ -38,6 +39,9 @@ class FollowAllSpider(BaseSpider):
         filename = 'out' + '/' + response.url.replace('/', '_')
         open(filename, 'wb').write(response.body)
         log.msg('Dump to ' + filename)
+
+        # stop the reactor when finished pulling one
+        reactor.stop()
 
         return []
 
